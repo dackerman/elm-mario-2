@@ -1,0 +1,10 @@
+{
+    "version": "0.1",
+    "summary": "Modified Mario project, based on Evan's Mario Example",
+    "description": "",
+    "license": "BSD3",
+    "exposed-modules": [],
+    "elm-version": "0.13",
+    "dependencies": {},
+    "repository": "https://github.com/dackerman/elm-mario-2.git"
+}
