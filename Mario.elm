@@ -2,15 +2,27 @@ import Keyboard
 import Window
 
 -- MODEL
+type Block =
+        { x : Float
+        , y : Float }
+
 type GameState =
         { x : Float
         , y : Float
         , vx : Float
         , vy : Float
-        , dir : String }
+        , dir : String
+        , blocks : [Block]}
+
+renderBlock : Float -> Block -> Form
+renderBlock h {x,y} = toForm (image 35 35 "/imgs/block.png") |> move (x, y - h / 2 )
 
 mario : GameState
-mario = { x=0, y=0, vx=0, vy=0, dir="right" }
+mario = { x=0, y=0, vx=0, vy=0, dir="right", blocks=initialBlocks }
+
+initialBlocks : [Block]
+initialBlocks = let genblock i = {x=50 * i, y=100}
+                in map genblock [0..10] 
 
 type Arrows = { x : Int, y : Int }
 
@@ -50,11 +62,11 @@ render (w',h') mario =
                 | otherwise     -> "stand"
       src = "/imgs/mario/" ++ verb ++ "/" ++ mario.dir ++ ".gif"
   in collage w' h'
-      [ rect w h  |> filled (rgb 174 238 238)
+     ([ rect w h  |> filled (rgb 174 238 238)
       , rect w 50 |> filled (rgb 74 163 41)
                   |> move (0, 24 - h/2)
       , toForm (image 35 35 src) |> move (mario.x, mario.y + 62 - h/2)
-      ]
+      ] ++ (map (renderBlock h) mario.blocks))
 
 -- MARIO
 input : Signal (Time, Arrows)
